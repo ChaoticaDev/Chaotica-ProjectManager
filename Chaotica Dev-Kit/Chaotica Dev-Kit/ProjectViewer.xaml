@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="Chaotica_Dev_Kit.ProjectViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Chaotica_Dev_Kit"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <RelativePanel MinWidth="200" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+            <StackPanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                <TextBlock Text="Project Name" Margin="5,0,0,0" Foreground="#FF7A7878" />
+                <TextBlock Text="Selected Bug Name" Margin="5,0,0,0" FontSize="20" />
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Edit" Margin="5" />
+                    <Button Content="Comments" Margin="5,0" />
+                    <Button Content="History" Margin="5" />
+                </StackPanel>
+                <TextBlock Text="Bug Details" Margin="5,10,0,0" Foreground="#FF7A7878" FontSize="30" />
+                
+            </StackPanel>
+        </RelativePanel>
+    </RelativePanel>
+</Page>
