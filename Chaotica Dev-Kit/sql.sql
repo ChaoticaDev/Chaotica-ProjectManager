@@ -22,6 +22,32 @@ CREATE DATABASE IF NOT EXISTS chaoticakit;
 USE chaoticakit;
 
 --
+-- Definition of table `bugs`
+--
+
+DROP TABLE IF EXISTS `bugs`;
+CREATE TABLE `bugs` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `PID` int(10) unsigned NOT NULL,
+  `Title` varchar(255) NOT NULL,
+  `Description` text NOT NULL,
+  `priority` int(10) unsigned NOT NULL,
+  `resolved` tinyint(1) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bugs`
+--
+
+/*!40000 ALTER TABLE `bugs` DISABLE KEYS */;
+INSERT INTO `bugs` (`ID`,`PID`,`Title`,`Description`,`priority`,`resolved`,`timestamp`) VALUES 
+ (1,1,'Test','This is a bug report',0,0,'2016-11-20 08:26:35');
+/*!40000 ALTER TABLE `bugs` ENABLE KEYS */;
+
+
+--
 -- Definition of table `projects`
 --
 
@@ -41,7 +67,7 @@ INSERT INTO `projects` (`ID`,`Title`) VALUES
  (1,'Example Project'),
  (2,'Chaotica Dev-Kit'),
  (26,'Montray Davis'),
- (27,'YUE');
+ (27,'Example Project 3');
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 
 
