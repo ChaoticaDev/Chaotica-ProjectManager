@@ -9,7 +9,7 @@ namespace Chaotica_Dev_Kit
 {
     class ChaoticaDBManager
     {
-        private String dbuser = "", dbpass = "", dbdbname = "chaotica";
+        private String dbuser = "", dbpass = "", dbdbname = "chaoticakit";
         //Connect to database
         public static MySqlConnection connection = new MySql.Data.MySqlClient.MySqlConnection();
 
@@ -26,8 +26,12 @@ namespace Chaotica_Dev_Kit
             String err;
             try
             {
+                if(connection.State == ConnectionState.Open)
+                {
+                    return;
+                }
                 //Connection String
-                connection.ConnectionString = "Server=127.0.0.1;Uid=" + dbuser + ";Pwd=" + dbpass + ";Database=" + dbdbname + ";SslMode=None;CharSet=utf8;";
+                connection.ConnectionString = "Server=localhost;Uid=" + dbuser + ";Pwd=" + dbpass + ";Database=" + dbdbname + ";SslMode=None;CharSet=utf8;";
 
                 //Open Connection
                 connection.Open();

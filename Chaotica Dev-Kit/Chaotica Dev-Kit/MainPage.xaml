@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView IsItemClickEnabled="True" x:Name="c_ProjectsPanel" ItemsSource="{x:Bind MyProjects}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" PointerReleased="c_ProjectsPanel_PointerReleased" ItemClick="c_ProjectsPanel_ItemClick">
+        <ListView Width="150" IsItemClickEnabled="True" Name="c_ProjectsPanel" ItemsSource="{x:Bind MyProjects}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" PointerReleased="c_ProjectsPanel_PointerReleased" ItemClick="c_ProjectsPanel_ItemClick">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:ChaoticaProject">
                     <TextBlock Text="{x:Bind Title}" />
@@ -16,15 +16,53 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Frame RelativePanel.RightOf="c_ProjectsPanel" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-            <RelativePanel>
-                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
-                    <Image Width="100" Source="Assets/pe_7s_folder_7800ff_none.png" />
+        <RelativePanel Width="300" x:Name="c_BugPanel" RelativePanel.RightOf="c_ProjectsPanel" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+            <!--<VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="canim_BugShow">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Storyboard.TargetName="c_BugPanel">
+                                <DiscreteObjectKeyFrame KeyTime="0" Value="0" />
+                                <DiscreteObjectKeyFrame KeyTime="5" Value="800" />
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>-->
+
+            <ListView IsItemClickEnabled="True" Name="c_ProjectBugsPanel" ItemsSource="{x:Bind MyBugs}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ChaoticaBug">
+                        <StackPanel Padding="5">
+                            <TextBlock Text="{x:Bind Title}" />
+                            <TextBlock Text="{x:Bind Description}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{x:Bind priorityImage}" Width="25" Height="25" Margin="0,5"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </RelativePanel>
+
+        <RelativePanel x:Name="p_Selector" RelativePanel.RightOf="c_BugPanel" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+            
+            <StackPanel x:Name="c_ProjectMG" RelativePanel.AlignHorizontalCenterWithPanel="True">
                     <TextBlock Text="Select a project to begin" TextAlignment="Center" />
 
-                    <Button x:Name="c_CreateProject" Content="Create Project" HorizontalAlignment="Stretch" Margin="0,15,0,0" Click="Button_Click" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="c_CreateProject" Content="Create Project" HorizontalAlignment="Stretch" Margin="0,5,0,0" Click="Button_Click" />
+                        <Button x:Name="c_EditProject" IsEnabled="False" Content="Edit" HorizontalAlignment="Stretch" Margin="5,5,0,0" Click="c_EditProject_Click" />
+                    </StackPanel>
+            </StackPanel>
+
+            <ItemsControl RelativePanel.Below="c_ProjectMG" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                <StackPanel Margin="0,5,0,0" Padding="5">
+                    <TextBlock Text="Bug name" />
                 </StackPanel>
-            </RelativePanel>
-        </Frame>
+            </ItemsControl>
+        </RelativePanel>
     </RelativePanel>
 </Page>

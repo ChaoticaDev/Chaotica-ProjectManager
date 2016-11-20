@@ -110,6 +110,9 @@
     <Compile Include="X_CreateProject.xaml.cs">
       <DependentUpon>X_CreateProject.xaml</DependentUpon>
     </Compile>
+    <Compile Include="X_EditProject.xaml.cs">
+      <DependentUpon>X_EditProject.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -118,6 +121,12 @@
     <None Include="Chaotica Dev-Kit_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\arrow-circle-down_256_0_2ab800_none.png" />
+    <Content Include="Assets\arrow-circle-down_256_0_faff00_none.png" />
+    <Content Include="Assets\arrow-circle-down_256_0_ff0000_none.png" />
+    <Content Include="Assets\arrow-circle-up_256_0_2ab800_none.png" />
+    <Content Include="Assets\arrow-circle-up_256_0_faff00_none.png" />
+    <Content Include="Assets\arrow-circle-up_256_0_ff0000_none.png" />
     <Content Include="Assets\pe_7s_folder_7800ff_none.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -142,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="X_CreateProject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="X_EditProject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

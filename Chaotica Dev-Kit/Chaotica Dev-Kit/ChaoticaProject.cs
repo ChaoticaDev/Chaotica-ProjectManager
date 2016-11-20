@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using MySql.Data.MySqlClient;
 
 namespace Chaotica_Dev_Kit
 {
@@ -27,7 +28,8 @@ namespace Chaotica_Dev_Kit
 
         private String _Title;
 
-        public String Title {
+        public String Title
+        {
             get
             {
                 return _Title;
@@ -39,27 +41,58 @@ namespace Chaotica_Dev_Kit
             }
         }
 
+        private String _ID;
+
+        public String ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                _ID = value;
+                NotifyPropertyChanged("Title");
+            }
+        }
+
         public ObservableCollection<ChaoticaBug> Bugs { get; set; }
 
-        public ChaoticaBug AddBug(String bugTitle, String bugDescription, int bugPriority = 1, bool bugResolved = false)
+        public ChaoticaBug AddBug(ChaoticaBug bug)
         {
-            ChaoticaBug bug = new ChaoticaBug();
-            bug.Title = bugTitle;
-            bug.Description = bugDescription;
-            bug.Priority = bugPriority;
-            bug.Project = this;
-            bug.Resolved = bugResolved;
-
+            //Create new comments container
             bug.Comments.Add(new ChaoticaComment("Hello", "This is so cool"));
 
+            //Add bug to container
             this.Bugs.Add(bug);
 
+            //Return newly created bug report
             return this.Bugs.ElementAt(this.Bugs.Count-1);
         }
 
-        public ChaoticaProject(String title)
+        public void LoadBugList(ChaoticaProject proj)
+        {
+            //Clear bug list
+            this.Bugs.Clear();
+
+            //MySQL Query
+            MySqlDataReader reader = ChaoticaDBManager.Query("SELECT * FROM `bugs` WHERE PID = '" + this.ID + "';");
+
+            //Loop Tables
+            while (reader.Read())
+            {
+                //Add Project [Get Project Title]
+                this.AddBug(new ChaoticaBug(reader.GetString("ID"), reader.GetString("Title"), reader.GetString("Description"), reader.GetString("TimeStamp"), reader.GetInt32("Priority"), reader.GetBoolean("Resolved"), proj));
+            }
+
+            //Close reader
+            reader.Close();
+        }
+
+        public ChaoticaProject(String pID, String title)
         {
             this.Title = title;
+            this.ID = pID;
             Bugs = new ObservableCollection<ChaoticaBug>();
         }
 
@@ -81,8 +114,7 @@ namespace Chaotica_Dev_Kit
         public static List <ChaoticaProject> GetProjects()
         {
             var projects = new List<ChaoticaProject>();
-
-            projects.Add(new ChaoticaProject("Getting Started"));
+            
 
             return projects;
         }

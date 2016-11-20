@@ -34,6 +34,8 @@ namespace Chaotica_Dev_Kit
 
         private ObservableCollection<ChaoticaProject> _projs;
 
+        private ObservableCollection<ChaoticaBug> _bugs;
+
         public Button btnn;
 
         private ObservableCollection<ChaoticaProject> MyProjects
@@ -47,6 +49,20 @@ namespace Chaotica_Dev_Kit
             {
                 _projs = value;
                 NotifyPropertyChanged("Projects");
+            }
+        }
+
+        private ObservableCollection<ChaoticaBug> MyBugs
+        {
+            get
+            {
+                return _bugs;
+            }
+
+            set
+            {
+                _bugs = value;
+                NotifyPropertyChanged("Bugs");
             }
         }
 
@@ -68,7 +84,7 @@ namespace Chaotica_Dev_Kit
             while (reader.Read())
             {
                 //Add Project [Get Project Title]
-                this.MyProjects.Add(new ChaoticaProject(reader.GetString("Title")));
+                this.MyProjects.Add(new ChaoticaProject(reader.GetString("ID"), reader.GetString("Title")));
             }
 
             reader.Close();
@@ -81,6 +97,7 @@ namespace Chaotica_Dev_Kit
 
 
             this.MyProjects = new ObservableCollection<ChaoticaProject>();
+            this.MyBugs = new ObservableCollection<ChaoticaBug>();
             this.MyProjects.Clear();
 
             c_ProjectsPanel.ItemsSource = this.MyProjects;
@@ -98,7 +115,7 @@ namespace Chaotica_Dev_Kit
             while (reader.Read())
             {
                 //Add Project [Get Project Title]
-                 this.MyProjects.Add(new ChaoticaProject(reader.GetString("Title"))); 
+                 this.MyProjects.Add(new ChaoticaProject(reader.GetString("ID"), reader.GetString("Title"))); 
             }
 
             reader.Close();
@@ -115,18 +132,28 @@ namespace Chaotica_Dev_Kit
         private void c_ProjectsPanel_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             
-            int x = 0;
-            x = 2;
         }
 
         private void c_ProjectsPanel_ItemClick(object sender, ItemClickEventArgs e)
         {
+            //Enable edit button on project selection
+            this.c_EditProject.IsEnabled = true;
+            this.p_Selector.Width = 100;
 
-            int x = 0;
-            x = 2;
+            ChaoticaProject selectedProj = (ChaoticaProject)e.ClickedItem;
+            this.MyBugs.Clear();
+
+            selectedProj.LoadBugList(selectedProj);
+            foreach(ChaoticaBug b in selectedProj.Bugs)
+            {
+                this.MyBugs.Add(b);
+            }
+
         }
+
         void RefProj_WinClose(object sender, RoutedEventArgs e)
         {
+            //Refresh projects list
             RefreshProjectsList();
         }
 
@@ -139,21 +166,48 @@ namespace Chaotica_Dev_Kit
             CoreDispatcherPriority.Normal,
             async () =>
             {*/
-                var newWindow = Window.Current;
-                var newAppView = ApplicationView.GetForCurrentView();
-                newAppView.Title = "Create Project";
 
-                var frame = new Frame();
-                frame.Navigate(typeof(X_CreateProject), this);
-                newWindow.Content = frame;
-                newWindow.Activate();
+            var newWindow = Window.Current;
+            var newAppView = ApplicationView.GetForCurrentView();
+            newAppView.Title = "Create Project";
+
+            var frame = new Frame();
+            frame.Navigate(typeof(X_CreateProject), this);
+            newWindow.Content = frame;
+            newWindow.Activate();
                 
+            this.GotFocus += new RoutedEventHandler(RefProj_WinClose);
+            
+        }
 
-                //frame.Unloaded += new RoutedEventHandler(RefProj_WinClose);
-                this.GotFocus += new RoutedEventHandler(RefProj_WinClose);
+        private void c_EditProject_Click(object sender, RoutedEventArgs e)
+        {
+            ChaoticaProject selectedProject = (ChaoticaProject)this.c_ProjectsPanel.Items.ElementAt(this.c_ProjectsPanel.SelectedIndex);
 
-                //await ApplicationViewSwitcher.TryShowAsStandaloneAsync( newAppView.Id, ViewSizePreference.UseMinimum, currentAV.Id, ViewSizePreference.UseMinimum);
-            //});
+            var newWindow = Window.Current;
+            var newAppView = ApplicationView.GetForCurrentView();
+            newAppView.Title = "Create Project";
+
+            var frame = new Frame();
+            frame.Navigate(typeof(X_EditProject), selectedProject);
+            newWindow.Content = frame;
+            newWindow.Activate();
+
+
+            //frame.Unloaded += new RoutedEventHandler(RefProj_WinClose);
+            this.GotFocus += new RoutedEventHandler(RefProj_WinClose);
+        }
+
+        public static void GoHome()
+        {
+            var newWindow = Window.Current;
+            var newAppView = ApplicationView.GetForCurrentView();
+            newAppView.Title = "Create Project";
+
+            var frame = new Frame();
+            frame.Navigate(typeof(MainPage), null);
+            newWindow.Content = frame;
+            newWindow.Activate();
         }
     }
 }
